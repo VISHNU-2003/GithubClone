@@ -1,0 +1,81 @@
+<div class="container mx-auto">
+  <div class="mt-10 flex justify-center">
+    <div class="max-w-full w-full">
+      
+      <h1 class="text-3xl font-bold mb-4">GitHub Repository Search</h1>
+      <h3 class="text-lg mb-4">FyleFrontEnd Challenge</h3>
+      <div class="flex items-center mb-4">
+        <input [(ngModel)]="username" placeholder="Enter GitHub username"
+               class="border border-gray-400 rounded px-4 py-2 w-full mr-2">
+        <button (click)="getRepos()"
+                class="bg-blue-500 hover:bg-blue-600 text-white rounded px-4 py-2">
+          Search
+        </button>
+      </div>
+      <div *ngIf="userProfile && searchPerformed">
+        <div class="flex items-center mb-4">
+          <img [src]="userProfile.avatar_url" alt="Profile Picture" class="rounded-full h-32 w-32 mr-4">
+          <div>
+            <h4>{{ userProfile.name }}</h4>
+            <p>{{ userProfile.bio }}</p>
+            <p>Location: {{ userProfile.location }}</p>
+            <p *ngIf="userProfile.blog">Social Media: <a [href]="userProfile.blog" target="_blank">{{ userProfile.blog }}</a></p>
+            <a [href]="'https://github.com/' + userProfile.login" target="_blank" class="text-blue-500">GitHub Profile</a>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="loading" class="text-center my-8">
+        <div class="animate-pulse">
+          <div class="flex items-center justify-center">
+            <div class="h-4 bg-gray-400 w-16 rounded-full mr-2"></div>
+            <div class="h-4 bg-gray-400 w-16 rounded-full mr-2"></div>
+            <div class="h-4 bg-gray-400 w-16 rounded-full mr-2"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="repos.length > 0">
+        <div class="grid grid-cols-2 gap-4">
+          <div *ngFor="let repo of repos" class="border border-gray-300 rounded-lg p-4 mb-8">
+            <h2 class="text-xl font-semibold text-blue-500 mb-2">{{ repo.name }}</h2>
+            <p class="text-gray-600">{{ repo.description }}</p>
+            <div *ngIf="repo.topics && repo.topics.length > 0" class="mt-2 bg-blue-100 border border-blue-500 rounded p-2">
+              <strong class="text-blue-500">Technologies:</strong>
+              <ul class="list-disc pl-5">
+                <li *ngFor="let topic of repo.topics" class="text-gray-600">{{ topic }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="repos.length === 0 && searchPerformed" class="text-red-500">No repositories found for this user.</div>
+      
+      <div *ngIf="searchPerformed && repos.length > 0" class="flex justify-between items-center mb-4">
+        <div>
+          <span class="mr-2">Repositories per page:</span>
+          <select [(ngModel)]="perPage" class="border border-gray-400 rounded px-4 py-2">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div>
+          <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1" class="px-3 py-2 rounded mr-2" [class.bg-gray-500]="currentPage === 1" [class.bg-blue-500]="currentPage !== 1">Previous</button>
+          <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages" class="px-3 py-2 rounded" [class.bg-gray-500]="currentPage === totalPages" [class.bg-blue-500]="currentPage !== totalPages">Next</button>
+        </div>
+      </div>
+      
+      <div class="flex justify-center mt-4" *ngIf="totalPages > 1">
+        <button *ngFor="let page of pagesArray" (click)="goToPage(page)" [class.active]="currentPage === page" class="mx-1 px-3 py-2 bg-blue-500 text-white rounded">
+          {{ page }}
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

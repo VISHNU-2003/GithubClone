@@ -1,0 +1,22 @@
+ /* Add these styles to your app.component.scss file */
+
+ .repo-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap between rows and columns */
+  }
+  
+  .repo-card {
+    width: calc(50% - 10px); /* Adjust the width of each card */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 768px) {
+    .repo-card {
+      width: calc(100% - 20px); /* Adjust the width of each card for smaller screens */
+    }
+  }
+  

@@ -1,0 +1,6 @@
+<div *ngIf="userProfile">
+  <img [src]="userProfile.avatar_url" alt="Profile Picture" width="100" height="100">
+  <h2>{{ userProfile.name }}</h2>
+  <p>{{ userProfile.bio }}</p>
+  <p>Username: {{ userProfile.login }}</p>
+</div>
